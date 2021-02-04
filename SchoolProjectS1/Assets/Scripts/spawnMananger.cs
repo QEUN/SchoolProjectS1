@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class spawnMananger : MonoBehaviour
 {
+    // the floats needed for the spawnlocations
     public GameObject[] SpawnBullshit;
     private float UpperLimmit = 5.0f;
     private float LowerLimmit = -3.0f;
@@ -13,7 +14,7 @@ public class spawnMananger : MonoBehaviour
     private float spawnInterval = 1.5f;
 
     
-    // Start is called before the first frame update
+    // spawns what is needed
     void Start()
     {
         InvokeRepeating("SpawnRandomLocation", startDelay, spawnInterval);
@@ -24,6 +25,7 @@ public class spawnMananger : MonoBehaviour
     {
         
     }
+    // makes sure we can spawn bullshit
     void SpawnRandomLocation()
     {
         int SpawnSint = Random.Range(0,SpawnBullshit.Length);
