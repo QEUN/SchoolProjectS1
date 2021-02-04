@@ -12,8 +12,8 @@ public class PlayerController : MonoBehaviour
     private Vector2 motion;
     private const float upperBound = 5.265f;
     private const float lowerBound = -3.27f;
-    private const float leftBound = -6.081f;
-    private const float rightBound = 6.081f;
+    private const float leftBound = -8.307f;
+    private const float rightBound = 8.307f;
 
     private bool leftPressed = false;
     private bool rightPressed = false;
@@ -113,6 +113,13 @@ public class PlayerController : MonoBehaviour
                 motion.x = 0.0f;
                 gameOver = true;
             }
+        }
+        else if (Input.GetKey(KeyCode.R))
+        {
+            gameOver = false;
+            transform.position = new Vector2(0.0f, 0.0f);
+            motion = new Vector2(0.0f, 0.0f);
+            transform.localScale = new Vector3(1.0f, 1.0f, transform.localScale.z);
         }
     }
 }

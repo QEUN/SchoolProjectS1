@@ -5,13 +5,13 @@ using UnityEngine;
 public class spawnMananger : MonoBehaviour
 {
     // the floats needed for the spawnlocations
-    public GameObject[] SpawnBullshit;
-    private float UpperLimmit = 5.0f;
-    private float LowerLimmit = -3.0f;
-    private float RightLimmit = 6.0f;
-    private float LeftLimmit = -6.0f;
-    private float startDelay = 2.0f;
-    private float spawnInterval = 1.5f;
+    public GameObject[] spawnBullshit;
+    private const float upperLimmit = 5.265f;
+    private const float lowerLimmit = -3.27f;
+    private const float rightLimmit = 8.307f;
+    private const float leftLimmit = -8.307f;
+    private const float startDelay = 1.0f;
+    private const float spawnInterval = 1.5f;
 
     
     // spawns what is needed
@@ -28,10 +28,9 @@ public class spawnMananger : MonoBehaviour
     // makes sure we can spawn bullshit
     void SpawnRandomLocation()
     {
-        int SpawnSint = Random.Range(0,SpawnBullshit.Length);
-        Vector3 spawnPos = new Vector3(Random.Range(UpperLimmit, LowerLimmit), 0, Random.Range(LeftLimmit, RightLimmit));
+        int spawnIndex = Random.Range(0, spawnBullshit.Length);
+        Vector3 spawnPos = new Vector3(Random.Range(leftLimmit, rightLimmit), Random.Range(lowerLimmit, upperLimmit), -6.0f);
 
-        Instantiate(SpawnBullshit[SpawnSint], spawnPos, SpawnBullshit[SpawnSint].transform.rotation);
-
+        Instantiate(spawnBullshit[spawnIndex], spawnPos, spawnBullshit[spawnIndex].transform.rotation);
     }
 }
