@@ -20,10 +20,13 @@ public class PlayerController : MonoBehaviour
     private bool upPressed = false;
     private bool downPressed = false;
 
+    public GameObject spawnManager;
+    private SpawnManager spawnManangerScript;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawnManangerScript = spawnManager.GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -117,9 +120,17 @@ public class PlayerController : MonoBehaviour
         else if (Input.GetKey(KeyCode.R))
         {
             gameOver = false;
-            transform.position = new Vector2(0.0f, 0.0f);
+            transform.position = new Vector3(0.0f, 0.0f, -5.0f);
             motion = new Vector2(0.0f, 0.0f);
             transform.localScale = new Vector3(1.0f, 1.0f, transform.localScale.z);
+            Destroy(GameObject.Find("SpawnBullshit(Clone)"));
+            spawnManangerScript.SpawnRandomLocation();
         }
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        Destroy(col.gameObject);
+        spawnManangerScript.SpawnRandomLocation();
     }
 }
