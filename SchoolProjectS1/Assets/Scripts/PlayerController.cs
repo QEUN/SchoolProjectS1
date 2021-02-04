@@ -2,7 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-// C# is schijt
+// CCCCCC    ##  ##            SSSSSS  CCCCCC  HH  HH  II    JJ  TTTTTT
+// CC      ##########  ======  SS      CC      HH  HH  II    JJ    TT  
+// CC        ##  ##            SSSSSS  CC      HHHHHH  II    JJ    TT  
+// CC      ##########  ======      SS  CC      HH  HH  II    JJ    TT  
+// CCCCCC    ##  ##            SSSSSS  CCCCCC  HH  HH  II  JJJJ    TT  
 
 public class PlayerController : MonoBehaviour
 {
@@ -20,10 +24,13 @@ public class PlayerController : MonoBehaviour
     private bool upPressed = false;
     private bool downPressed = false;
 
+    public GameObject spawnManager;
+    private SpawnManager spawnManangerScript;
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        spawnManangerScript = spawnManager.GetComponent<SpawnManager>();
     }
 
     // Update is called once per frame
@@ -40,13 +47,11 @@ public class PlayerController : MonoBehaviour
             // Move player
             if (leftPressed && !rightPressed)
             {
-                //transform.Translate(Vector2.left * speed * Time.deltaTime);
                 motion.x -= acceleration * Time.deltaTime;
                 transform.localScale = new Vector3(1.0f, transform.localScale.y, transform.localScale.z);
             }
             else if (rightPressed && !leftPressed)
             {
-                //transform.Translate(Vector2.right * speed * Time.deltaTime);
                 motion.x += acceleration * Time.deltaTime;
                 transform.localScale = new Vector3(-1.0f, transform.localScale.y, transform.localScale.z);
             }
@@ -64,14 +69,12 @@ public class PlayerController : MonoBehaviour
 
             if (upPressed && !downPressed)
             {
-                //transform.Translate(Vector2.up * speed * Time.deltaTime);
                 motion.y += acceleration * Time.deltaTime;
                 transform.localScale = new Vector3(transform.localScale.x, 1.0f, transform.localScale.z);
             }
             else if (downPressed && !upPressed)
             {
                 motion.y -= acceleration * Time.deltaTime;
-                //transform.Translate(Vector2.down * speed * Time.deltaTime);
                 transform.localScale = new Vector3(transform.localScale.x, -1.0f, transform.localScale.z);
             }
             else
@@ -116,10 +119,20 @@ public class PlayerController : MonoBehaviour
         }
         else if (Input.GetKey(KeyCode.R))
         {
+            // Reset everything
             gameOver = false;
-            transform.position = new Vector2(0.0f, 0.0f);
+            transform.position = new Vector3(0.0f, 0.0f, -5.0f);
             motion = new Vector2(0.0f, 0.0f);
             transform.localScale = new Vector3(1.0f, 1.0f, transform.localScale.z);
+            Destroy(GameObject.Find("SpawnBullshit(Clone)"));
+            spawnManangerScript.SpawnRandomLocation();
         }
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        // Weet ik veel
+        Destroy(col.gameObject);
+        spawnManangerScript.SpawnRandomLocation();
     }
 }
