@@ -11,8 +11,8 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     public bool gameOver = false;
-    private const float acceleration = 0.1f;
-    private const float deceleration = 0.03f;
+    private const float acceleration = 50.0f;
+    private const float deceleration = 15.0f;
     private Vector2 motion;
     private const float upperBound = 5.265f;
     private const float lowerBound = -3.27f;
@@ -35,6 +35,8 @@ public class PlayerController : MonoBehaviour
     public GameObject gameOverText;
     private TextMesh gameOverTextMesh;
 
+    private SpriteRenderer spriteRenderer;
+
     private const float startTime = 10.0f;
     private float remainingTime = startTime;
 
@@ -47,6 +49,7 @@ public class PlayerController : MonoBehaviour
         timerMesh = timer.GetComponent<TextMesh>();
         scoreMesh = score.GetComponent<TextMesh>();
         gameOverTextMesh = gameOverText.GetComponent<TextMesh>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -64,12 +67,12 @@ public class PlayerController : MonoBehaviour
             if (leftPressed && !rightPressed)
             {
                 motion.x -= acceleration * Time.deltaTime;
-                transform.localScale = new Vector3(1.0f, transform.localScale.y, transform.localScale.z);
+                spriteRenderer.flipX = false;
             }
             else if (rightPressed && !leftPressed)
             {
                 motion.x += acceleration * Time.deltaTime;
-                transform.localScale = new Vector3(-1.0f, transform.localScale.y, transform.localScale.z);
+                spriteRenderer.flipX = true;
             }
             else
             {
@@ -82,16 +85,15 @@ public class PlayerController : MonoBehaviour
                     motion.x = Mathf.Min(motion.x + deceleration * Time.deltaTime, 0.0f);
                 }
             }
-
             if (upPressed && !downPressed)
             {
                 motion.y += acceleration * Time.deltaTime;
-                transform.localScale = new Vector3(transform.localScale.x, 1.0f, transform.localScale.z);
+                spriteRenderer.flipY = false;
             }
             else if (downPressed && !upPressed)
             {
                 motion.y -= acceleration * Time.deltaTime;
-                transform.localScale = new Vector3(transform.localScale.x, -1.0f, transform.localScale.z);
+                spriteRenderer.flipY = true;
             }
             else
             {
@@ -105,7 +107,8 @@ public class PlayerController : MonoBehaviour
                 }
             }
 
-            transform.Translate(motion);
+            // Move player
+            transform.Translate(motion * Time.deltaTime);
 
             // Game over if the player exits the screen
             if (transform.position.y > upperBound)
@@ -137,18 +140,20 @@ public class PlayerController : MonoBehaviour
                 gameOverTextMesh.text = "GAME OVER!\nPress R to retry";
             }
 
+            // Decrement time
             if (remainingTime > 0)
             {
                 remainingTime -= Time.deltaTime;
             }
             else
             {
+                // Gameover if time reaches zero
                 gameOver = true;
                 gameOverTextMesh.text = "GAME OVER!\nPress R to retry";
             }
             timerMesh.text = "" + (int)Mathf.Ceil(remainingTime);
         }
-        else if (Input.GetKey(KeyCode.R))
+        else if (Input.GetKeyDown(KeyCode.R))
         {
             // Reset everything
             gameOver = false;
