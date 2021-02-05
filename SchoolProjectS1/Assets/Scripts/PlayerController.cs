@@ -159,7 +159,8 @@ public class PlayerController : MonoBehaviour
             gameOver = false;
             transform.position = new Vector3(0.0f, 1.0f, -5.0f);
             motion = new Vector2(0.0f, 0.0f);
-            transform.localScale = new Vector3(1.0f, 1.0f, transform.localScale.z);
+            spriteRenderer.flipX = false;
+            spriteRenderer.flipY = false;
             Destroy(GameObject.Find("SpawnBullshit(Clone)"));
             spawnManangerScript.SpawnRandomLocation();
             remainingTime = startTime;
